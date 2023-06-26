@@ -13,7 +13,7 @@
 // const struct device *rtc_dev = device_get_binding("rtc0");
 // #define RTC_DEVICE_NODE DT_NODELABEL(rtc0)
 // const struct device *const rtc_dev = DEVICE_DT_GET(RTC_DEVICE_NODE);
- static const struct device *const rtc_dev = DEVICE_DT_GET_ONE(nordic_nrf_clock);
+//  static const struct device *const rtc_dev = DEVICE_DT_GET_ONE(nordic_nrf_clock);
 // static const struct device *const rtc_dev = DEVICE_DT_GET_ONE(nrf_rtc);
 
 
@@ -21,7 +21,7 @@ int main(void)
 {
 
 	printk("Board: %s\n", CONFIG_BOARD);
-	// const struct device *rtc_dev = device_get_binding("rtc0");
+	const struct device *rtc_dev = device_get_binding("rtc0");
 
 	int32_t calibration = 0;
 	// (void) rtc_get_calibration(rtc_dev, &calibration);
@@ -42,12 +42,16 @@ int main(void)
 	current_time.tm_isdst	=  -1;
 	current_time.tm_nsec	=  10;
 
+
+	printk("dev %x  ct %x  \n", rtc_dev, &current_time);
+
 	printk("OK\n\r");
 	int result = rtc_set_time( rtc_dev, &current_time );
 	if ( 0 != result )
 	{
 		printk("Error setting RTC %d\n\r", result);
 	}
+	printk("dev %x  ct %x  \n", rtc_dev, &current_time);
 
 	printk("\nEntering loop\r\n");
 
